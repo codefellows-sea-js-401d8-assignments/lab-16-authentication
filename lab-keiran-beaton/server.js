@@ -1,5 +1,6 @@
 'use strict';
 
+let port = 3000;
 if (!process.env.APP_SECRET) throw new Error('Please set up the env APP_SECRET');
 const mongoose = require('mongoose');
 mongoose.Promise = Promise;
@@ -14,4 +15,4 @@ app.use((err, req, res, next) => {
   serverError(err);
   res.status(err.statusCode || 500).json(err.message);
 });
-app.listen(3000, () => console.log('server is up'));
+app.listen(port, () => console.log('server is up'));
