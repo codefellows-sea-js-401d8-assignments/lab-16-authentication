@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "body-parser": "^1.15.2",
     "chai": "^3.5.0",
     "chai-gulp-helpers": "0.0.3",
     "chai-http": "^3.0.0",
@@ -20,7 +19,10 @@
     "mocha": "^3.0.0"
   },
   "dependencies": {
+    "bcrypt": "latest",
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "jsonwebtoken": "^7.1.7",
     "mongoose": "^4.5.8"
   }
 }
