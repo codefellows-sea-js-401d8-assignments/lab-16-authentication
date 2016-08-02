@@ -12,9 +12,10 @@ let serverError = require('debug')('auth:error');
 
 app.use('/api', authRouter);
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   serverError(err);
   res.status(err.statusCode || 500).json(err.message);
+  next();
 });
 
 app.listen(port, () => console.log('server up at ' + port));

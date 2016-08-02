@@ -7,7 +7,6 @@ const request = chai.request;
 const expect = chai.expect;
 
 const mongoose = require('mongoose');
-const User = require('../model/usermodel');
 var app = require('../server');
 let server;
 
@@ -17,14 +16,13 @@ process.env.DB_SERVER = TEST_DB_SERVER;
 describe('Test CRUD ', () => {
   let testUser;
   before((done) => {
-    server = app.listen(5000, () => {
+    app.listen(5000, () => {
       console.log('up on 5000');
     });
-    testUser = User({username: 'aliza',
-    basic: {
+    testUser = {
       email: 'aliza@aliza.com',
-      password: 'aliza'
-    }});
+      password: 'abcd12345'
+    };
     testUser.save((err, user) => {
       testUser = user;
       done();
@@ -40,11 +38,10 @@ describe('Test CRUD ', () => {
   it('POST 200', (done) => {
     request('localhost:5000')
       .post('/api/signup')
-      .send({username: 'aliza2',
-      basic: {
-        email: 'aliza2@aliza.com',
-        password: 'aliza2'
-      }})
+      .send({
+        email: 'aliza@aliza.net',
+        password: 'qwerty98765'
+      })
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
@@ -52,12 +49,31 @@ describe('Test CRUD ', () => {
       });
   });
 
+  it('POST 400', (done) => {
+    request('localhost:5000')
+      .post('/api/signup')
+      .send({huzzah: 'huzzah'})
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
+
   it('GET 200', (done) => {
     request('localhost:5000')
-      .get('/api/login')
+      .get('/api/signin' + testUser)
       .end((err, res) => {
         expect(err).to.eql(null);
-        expect(res).to.eql(200);
+        expect(res.body.age).to.eql(27);
+        done();
+      });
+  });
+
+  it('GET 404', (done) => {
+    request('localhost:5000')
+      .get('/api/signin')
+      .end((err, res) => {
+        expect(res).to.have.status(404);
         done();
       });
   });
