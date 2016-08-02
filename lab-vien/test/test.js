@@ -10,9 +10,10 @@ const User = require('../model/User');
 const mongoose = require('mongoose');
 
 //connect to mongod
+const TEST_PORT = 8000;
 const TEST_DB_SERVER = 'mongodb://localhost/test_db';
 process.env.MONGO_URI = TEST_DB_SERVER;
-
+process.env.PORT = TEST_PORT;
 const testServer = require('../server');
 
 const baseUrl = 'localhost:3000/api';
