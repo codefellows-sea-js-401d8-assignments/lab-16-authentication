@@ -10,7 +10,7 @@ let userRouter = module.exports = exports = express.Router();
 
 userRouter.post('/signup', jsonParser, (req, res, next) => {
   let newUser = new User();
-  newUser.username = req.body.username;
+  newUser.basic.username = req.body.username;
   newUser.generateHash(req.body.password)
   .then(() => {
     newUser.save().then(res.json.bind(res));
@@ -22,12 +22,15 @@ userRouter.post('/signup', jsonParser, (req, res, next) => {
 });
 
 userRouter.get('/signin', basicHttp, (req, res, next) => {
-  let authError = next(handleError(500, 'Not Authenticated'));
+  let authError = handleError(500, 'Not Authenticated');
   User.findOne({'basic.username': req.auth.username})
     .then((user) => {
-      if (!user) return authError;
-      user.comparePassword(req.auth.password)
-        .then(res.json.bind(res), authError);
+      if (!user) return next(authError);
+      user.compareHash(req.auth.password)
+        .then(res.json.bind(res))
+        .catch((err) => {
+          return next(err);
+        });
     }, authError);
 });
 
