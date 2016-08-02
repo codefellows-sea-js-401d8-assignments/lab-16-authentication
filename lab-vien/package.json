@@ -1,0 +1,38 @@
+{
+  "name": "lab-09-express-single-resource",
+  "version": "1.0.0",
+  "description": "lab 11 single resource express api",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vienly/lab-09-express-single-resource.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vienly/lab-09-express-single-resource/issues"
+  },
+  "homepage": "https://github.com/vienly/lab-09-express-single-resource#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "debug": "^2.2.0",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.7",
+    "morgan": "^1.7.0",
+    "node-uuid": "^1.4.7"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^2.2.0",
+    "mocha": "^2.5.3",
+    "mongodb": "^2.2.5",
+    "nodemon": "^1.10.0"
+  }
+}
