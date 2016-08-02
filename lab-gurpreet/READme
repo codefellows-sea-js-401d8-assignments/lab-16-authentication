@@ -1,0 +1,15 @@
+As a developer:-
+
+clone down the repository("lab-16-authentication")
+  run npm i to install package.json.
+
+To run the mongodb in the terminal type
+  mongod --dbpath db
+
+  run node server in another terminal
+Open an another terminal by hitting command T on mac.
+  type "echo '{"email":"example@dose.com","password":"123456"}' | http: 3000/api/signup " and enter
+  this will sign up an account.
+
+to test if you have that account set up and to sign in ----http -a email(actual email):password(actual password): 3000/api/signin.
+    
