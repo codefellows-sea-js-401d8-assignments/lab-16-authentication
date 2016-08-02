@@ -64,7 +64,7 @@ describe('Test CRUD ', () => {
       .get('/api/signin' + testUser)
       .end((err, res) => {
         expect(err).to.eql(null);
-        expect(res.body.age).to.eql(27);
+        expect(res).to.have.status(200);
         done();
       });
   });
