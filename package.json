@@ -1,0 +1,29 @@
+{
+  "name": "lab-16-authentication",
+  "version": "1.0.0",
+  "description": "![cf](https://i.imgur.com/7v5ASc8.png) lab 16 express authorization ======",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Firefly4266/lab-16-authentication.git"
+  },
+  "keywords": [],
+  "author": "Jp Gaines",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Firefly4266/lab-16-authentication/issues"
+  },
+  "homepage": "https://github.com/Firefly4266/lab-16-authentication#readme",
+  "dependencies": {
+    "bcrypt": "latest",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.8"
+  },
+  "devDependencies": {
+    "debug": "^2.2.0"
+  }
+}
