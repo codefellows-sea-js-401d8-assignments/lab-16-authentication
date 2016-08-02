@@ -17,6 +17,7 @@
     "mongoose": "^4.5.8"
   },
   "devDependencies": {
+    "bcryptjs": "^2.3.0",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
