@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 
 //connect to mongod
 const TEST_DB_SERVER = 'mongodb://localhost/test_db';
-process.env.DB_SERVER = TEST_DB_SERVER;
+process.env.MONGO_URI = TEST_DB_SERVER;
 
 const testServer = require('../server');
 
