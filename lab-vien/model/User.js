@@ -28,9 +28,11 @@ userSchema.methods.generateHash = function(password) {
 };
 
 userSchema.methods.comparePassword = function(password) {
-  console.log('comaring pasword');
+  console.log('comparing password');
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, this.basic.password, (err, result) => {
+      if (err)
+        return reject(err);
       if (result === false)
         return reject(new Error('password does not match'));
       resolve(this);
@@ -41,7 +43,6 @@ userSchema.methods.comparePassword = function(password) {
 userSchema.methods.generateRandomHash = function() {
   return new Promise((resolve, reject) => {
     this.basic.randomHash = crypto.randomBytes(32).toString('hex');
-    console.log(this);
     this.save()
       .then(() => {
         resolve(this.basic.randomHash);
