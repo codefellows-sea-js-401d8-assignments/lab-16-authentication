@@ -15,7 +15,7 @@ authRouter.post('/signup', jsonParser, (req, res, next) => {
 
 authRouter.get('/signin', authParser, (req, res, next) => {
   signin(req)
-    .then(token => {console.log(token); res.json(token);})
+    .then(token => res.json(token))
     .catch(next);
 });
 
@@ -38,9 +38,14 @@ let signup = function(req) {
 let signin = function(req) {
   return new Promise((resolve, reject) => {
     User.findOne({username: req.auth.username})
-      .then(user => user.comparePassword(req.auth.password))
-      .then(user => user.generateToken())
-      .then(token => resolve(token))
-      .catch(err => reject(err));
+      .then((user) => {
+        if (!user)
+          return reject(httpError(401, 'no such user'));
+
+        user.comparePassword(req.auth.password)
+        .then(user => user.generateToken())
+        .then(token => resolve(token))
+        .catch(err => reject(err));
+      });
   });
 };
