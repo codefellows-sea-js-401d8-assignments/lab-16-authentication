@@ -31,10 +31,9 @@ userSchema.methods.generateHash = function(password) {
 userSchema.methods.comparePassword = function(password) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, this.basic.password, (err, result) => {
-      console.log(result);
       if (err)
         return reject(err);
-      if (result === false)
+      if (!result)
         return reject(httpError(401, 'password does not match'));
       resolve(this);
     });

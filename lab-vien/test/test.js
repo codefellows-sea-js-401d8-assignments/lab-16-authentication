@@ -6,17 +6,14 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 const request = chai.request;
 const User = require('../model/User');
-
 const mongoose = require('mongoose');
+const baseUrl = `localhost:${TEST_PORT}/api`;
 
-//connect to mongod
 const TEST_PORT = 8000;
 const TEST_DB_SERVER = 'mongodb://localhost/test_db';
 process.env.MONGO_URI = TEST_DB_SERVER;
 process.env.PORT = TEST_PORT;
 const testServer = require('../server');
-
-const baseUrl = `localhost:${TEST_PORT}/api`;
 
 describe('testing auth router', function() {
   before(function(done) {
