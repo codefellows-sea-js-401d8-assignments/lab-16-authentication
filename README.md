@@ -47,7 +47,7 @@
 ### `/api/signup`
 * `POST` request
  * the client should pass the username and passord in the body of the request
- * the server should respond with a token genoratorated using jsonwebtoken and the users findHash
+ * the server should respond with a token genoratorated using jsonwebtoken and the users `_id`
  * the server should respond with a 400 Bad Request to failed request
 
 ### `/api/signin`
