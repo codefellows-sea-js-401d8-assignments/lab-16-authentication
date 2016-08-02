@@ -16,7 +16,7 @@ process.env.MONGO_URI = TEST_DB_SERVER;
 process.env.PORT = TEST_PORT;
 const testServer = require('../server');
 
-const baseUrl = 'localhost:3000/api';
+const baseUrl = `localhost:${TEST_PORT}/api`;
 
 describe('testing auth router', function() {
   before(function(done) {
