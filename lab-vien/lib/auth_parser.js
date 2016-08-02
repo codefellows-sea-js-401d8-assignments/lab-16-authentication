@@ -17,4 +17,6 @@ module.exports = function(req, res, next) {
   if (!req.auth.username || !req.auth.password) {
     return next(httpError(401, 'username or password not provided'));
   }
+
+  next();
 };

@@ -8,24 +8,40 @@ const httpError = require('http-errors');
 const authRouter = module.exports = Router();
 
 authRouter.post('/signup', jsonParser, (req, res, next) => {
-  let newUser = new User();
-  if(!req.body || !req.body.username || !req.body.password || !req.body.email) {
-    next(httpError(400, 'required fields not satisfied'));
-  }
-
-  newUser.username = req.body.username;
-  newUser.basic.email = req.body.email;
-  newUser.generateHash(req.body.password)
-    .then(() => {
-      newUser.save()
-        .then((data) => {
-          return res.json(data);
-        })
-        .catch((err) => {
-          next(err); // 500
-        });
-    })
-    .catch((err) => {
-      next(err);
-    });
+  signup(req)
+    .then(token => res.json(token))
+    .catch(next);
 });
+
+authRouter.get('/signin', authParser, (req, res, next) => {
+  signin(req)
+    .then(token => res.json(token))
+    .catch(next);
+});
+
+let signup = function(req) {
+  return new Promise((resolve, reject) => {
+    if(!req.body.username || !req.body.password || !req.body.email) {
+      return reject(httpError(400, 'required fields not satisfied'));
+    }
+    let newUser = new User();
+    newUser.username = req.body.username;
+    newUser.basic.email = req.body.email;
+    newUser.generateHash(req.body.password)
+      .then(newUser => newUser.save())
+      .then(newUser => newUser.generateToken())
+      .then(token => resolve(token))
+      .catch(err => reject(err));
+  });
+};
+
+let signin = function(req) {
+  console.log(req.auth);
+  return new Promise((resolve, reject) => {
+    User.findOne({username: req.auth.username})
+      .then(user => { console.log(user); user.comparePassword(req.auth.password);})
+      .then(user => { console.log(user); user.generateToken();})
+      .then(token => resolve(token))
+      .cath(err => reject(err));
+  });
+};
