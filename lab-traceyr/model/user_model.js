@@ -11,4 +11,23 @@ let userSchema = mongoose.Schema({
   }
 });
 
+userSchema.methods.createHash = function(password){
+  new Promise((resolve, reject) =>{
+    bcrypt.hash(password, 8, (err, data) =>{
+      if(err) return reject(err);
+      this.basic.password = data;
+      resolve(data);
+    });
+  });
+};
+
+userSchema.methods.comparePass = function(password){
+  return new Promise((resolve, reject) =>{
+    bcrypt.compare(password, this.basic.password, (err, data) =>{
+      if (err) return reject(err);
+      if (data === false) return reject(new Error('No matching password'));
+    });
+  });
+};
+
 module.exports = exports = mongoose.model('Users', userSchema);
