@@ -20,11 +20,11 @@ Making a request:
 
 Signup:
 ```
-http POST :3000/api/user/signup "username=test" "password=password"
+http POST :3000/api/signup "username=test" "password=password"
 ```
 Signin:
 ```
-http -a test:password :3000/api/user/signin
+http -a test:password :3000/api/signin
 ```
 Running test:
 ```
