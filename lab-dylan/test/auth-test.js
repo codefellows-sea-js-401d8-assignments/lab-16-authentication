@@ -5,52 +5,84 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const request = chai.request;
 const expect = chai.expect;
-const BasicHTTP = require('../lib/basic_http');
-const
-process.env.APP_SECRET = 'This is the APP SECRET';
-
-const mongoose = require('mongoose');
 const User = require('../model/user');
-var app = require('../server');
-var server;
+const baseUrl = 'localhost:5000/api';
+
+// const BasicHTTP = require('../lib/basic_http');
 
 
-describe('Test crud', () => {
-  let testUser;
-  before((done) => {
-    server = app.listen(5000, () => {
-      console.log('server up on 5000');
-      done();
-    });
-  });
-  after((done) => {
-    mongoose.connection.db.dropDatabase(() => {
-      server.close();
-      done();
-    });
-  });
-  it('should save the test user', (done) => {
-    request('localhost:5000')
-      .post('/api/signup/')
+describe('Test authenication', function() {
+  it('should create a user', function(done) {
+    request(baseUrl)
+      .post('/signup')
       .send({username: 'dylanjsa90', password: '1234'})
-      .end((err, res) => {
+      .end(function(err, res) {
         expect(err).to.eql(null);
-        expect(res.status).to.eql(200);
+        expect(res.body).to.have.property('token');
+        expect(res.body.token.length).to.not.eql(0);
         done();
       });
   });
 
-  it('should login the user', (done) => {
-    request('localhost:3000').auth('dylanjsa90', '1234')
-      .get('/api/signin')
+  describe('tests with user in database', function() {
+    before(function(done) {
+      let testUser = new User({username: 'testUser', password: 'testpass'});
+      testUser.createHash('testpass').then((token) => {
+        this.tokenData = token;
+        testUser.save().then((userData) => {
+          this.user = userData;
+          done();
+        }, (err) => {throw err});
+      }, (err) => {throw err});
+    });
+
+    it('should authenicate the test user', function(done) {
+      request(baseUrl)
+      .get('/signin')
+      .auth('testUser', 'testpass')
       .end((err, res) => {
         expect(err).to.eql(null);
-        expect(res.status).to.eql(200);
+        expect(res.body).to.have.property('token');
+        expect(res.body.token.length).to.not.eql(0);
         done();
       });
-  });
+    });
 
-  it('bad request', (done) => {
-    done()
+    it('should authenicate the user with a token', function(done) {
+      request(baseUrl)
+      .get('/jwt_auth')
+      .set('Authorization', 'Bearer' + this.tokenData)
+      .end((err, res) => {
+        expect(err).to.eql(null);
+        expect(res.body.msg).to.eql('success');
+        done();
+      });
+    });
+
+    it('should not authenicate without a token', function(done) {
+      request(baseUrl)
+        .get('/jwt_auth')
+        .end((err, res) => {
+          expect(err).to.not.eql(null);
+          expect(res.status).to.eql(401);
+          done();
+        });
+    });
   });
 });
+
+
+
+
+// before((done) => {
+//   server = app.listen(5000, () => {
+//     console.log('server up on 5000');
+//     done();
+//   });
+// });
+// after((done) => {
+//   mongoose.connection.db.dropDatabase(() => {
+//     server.close();
+//     done();
+//   });
+// });

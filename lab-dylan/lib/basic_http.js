@@ -9,5 +9,6 @@ module.exports = exports = function(req, res, next) {
   } catch (e) {
     e.statusCode = 400;
     e.message = 'Invalid Basic HTTP Authentication';
+    next(e);
   }
 };

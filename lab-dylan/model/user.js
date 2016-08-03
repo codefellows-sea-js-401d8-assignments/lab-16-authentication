@@ -5,7 +5,8 @@ const bcrypt = require('bcrypt');
 
 let userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
-  password: String
+  password: String,
+  role: {type: String, default: 'basic'}
 });
 
 userSchema.methods.createHash = function(password) {
@@ -28,4 +29,4 @@ userSchema.methods.comparePassword = function(password) {
   });
 };
 
-module.exports = exports = userSchema;
+module.exports = exports = mongoose.model('User', userSchema);

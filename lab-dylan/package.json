@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/test_harness.js",
     "start": "node server.js"
   },
   "repository": {
@@ -22,18 +22,22 @@
   },
   "homepage": "https://github.com/dylanjsa90/lab-16-authentication#readme",
   "dependencies": {
+    "assert": "^1.4.1",
+    "bcrypt": "latest",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "mongoose": "^4.5.8",
-    "superagent": "^2.1.0"
+    "jsonwebtoken": "^7.1.7",
+    "mongoose": "^4.5.8"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
+    "debug": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
     "gulp-mocha": "^3.0.0",
     "mocha": "^3.0.0",
+    "morgan": "^1.7.0",
     "superagent": "^2.1.0"
   }
 }
