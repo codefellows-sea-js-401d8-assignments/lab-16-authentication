@@ -1,0 +1,25 @@
+{
+  "name": "lab-james",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/test.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bcrypt": "^0.8.7",
+    "body-parser": "^1.15.2",
+    "debug": "^2.2.0",
+    "http-errors": "^1.5.0",
+    "jsonwebtoken": "^7.1.7",
+    "morgan": "^1.7.0",
+    "nodemon": "^1.10.0"
+  }
+}
