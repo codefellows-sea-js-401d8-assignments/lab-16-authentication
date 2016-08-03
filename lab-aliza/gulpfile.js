@@ -13,14 +13,14 @@ gulp.task('eslint', () => {
 });
 
 gulp.task('mocha', () =>
-    gulp.src(testFiles)
-        .pipe(mocha())
-        .once('error', () => {
-          process.exit(1);
-        })
-        .once('end', () => {
-          process.exit();
-        })
+  gulp.src(testFiles)
+    .pipe(mocha())
+    .once('error', () => {
+      process.exit(1);
+    })
+    .once('end', () => {
+      process.exit();
+    })
 );
 
 gulp.task('nodemon', () => {
