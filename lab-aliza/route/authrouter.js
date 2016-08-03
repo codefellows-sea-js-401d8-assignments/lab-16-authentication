@@ -15,10 +15,10 @@ authRouter.post('/signup', jsonParser, (req, res, next) => {
   newUser.basic.email = req.body.email;
   newUser.username = req.body.username || req.body.email;
   newUser.generateHash(req.body.password)
-    .then((token) => {
+    .then((hash) => {
       newUser.save((err, user) => {
-        if (err) next(err400);
-        if (user) return res.json(token);
+        if (err) return next(err400);
+        if (user) return res.json(hash);
       });
     });
 });
