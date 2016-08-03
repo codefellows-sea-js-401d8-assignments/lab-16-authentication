@@ -1,15 +1,19 @@
 'use strict';
 
 const port = 3000;
-
-if (!process.env.APP_SECRET) throw new Error('Set env APP_SECRET');
 const mongoose = require('mongoose');
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://localhost/auth_dev');
+const morgan = require('morgan');
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/auth_dev';
 let app = require('express')();
 let authRouter = require('./route/authrouter');
 let serverError = require('debug')('auth:error');
 
+if (!process.env.APP_SECRET) throw new Error('Set env APP_SECRET');
+
+mongoose.connect(MONGO_URI);
+
+app.use(morgan('dev'));
 app.use('/api', authRouter);
 
 app.use((err, req, res, next) => {
@@ -18,4 +22,8 @@ app.use((err, req, res, next) => {
   next();
 });
 
-app.listen(port, () => console.log('server up at ' + port));
+app.listen(port, () => {
+  console.log('server up on ' + port);
+});
+
+module.exports = exports = app;
