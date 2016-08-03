@@ -9,11 +9,11 @@ const httpError = require('http-errors');
 const APP_SECRET = process.env.APP_SECRET || 'test secret';
 
 const userSchema = Schema({
-  username: {type: String},
+  username: { type: String },
   basic: {
-    email: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
-    randomHash: {type: String, unique: true}
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    randomHash: { type: String, unique: true }
   }
 });
 
