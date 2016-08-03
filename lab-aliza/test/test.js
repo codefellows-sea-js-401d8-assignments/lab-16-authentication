@@ -1,30 +1,20 @@
 'use strict';
-
 const chai = require('chai');
-const chaiHTTP = require('chai-http');
-chai.use(chaiHTTP);
+const chaiHttp = require('chai-http');
+chai.use(chaiHttp);
 const request = chai.request;
 const expect = chai.expect;
-
 const mongoose = require('mongoose');
-var app = require('../server');
+let app = require('../server');
 let server;
+const port = 5000;
 
 const TEST_DB_SERVER = 'mongodb://localhost/test_db';
 process.env.DB_SERVER = TEST_DB_SERVER;
 
-describe('Test CRUD ', () => {
-  let testUser;
+describe('Authentication tests', () => {
   before((done) => {
-    app.listen(5000, () => {
-      console.log('up on 5000');
-    });
-    testUser = {
-      email: 'aliza@aliza.com',
-      password: 'abcd12345'
-    };
-    testUser.save((err, user) => {
-      testUser = user;
+    server = app.listen(port, () => {
       done();
     });
   });
@@ -38,21 +28,17 @@ describe('Test CRUD ', () => {
   it('POST 200', (done) => {
     request('localhost:5000')
       .post('/api/signup')
-      .send({
-        email: 'aliza@aliza.net',
-        password: 'qwerty98765'
-      })
+      .send({email:'aliza@aliza.com', password:'password12345'})
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
         done();
       });
   });
-
   it('POST 400', (done) => {
     request('localhost:5000')
       .post('/api/signup')
-      .send({huzzah: 'huzzah'})
+      .send({blah:'blah'})
       .end((err, res) => {
         expect(res).to.have.status(400);
         done();
@@ -61,17 +47,27 @@ describe('Test CRUD ', () => {
 
   it('GET 200', (done) => {
     request('localhost:5000')
-      .get('/api/signin' + testUser)
+      .get('/api/signin')
+      .auth('aliza@aliza.com','password12345')
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
+        expect(res.body).to.have.property('token');
         done();
       });
   });
-
-  it('GET 404', (done) => {
+  it('GET 401', (done) => {
     request('localhost:5000')
       .get('/api/signin')
+      .auth('wrongemail', 'wrongpassword')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
+  it('GET 404', (done) => {
+    request('localhost:5000')
+      .get('/wrong')
       .end((err, res) => {
         expect(res).to.have.status(404);
         done();
