@@ -12,13 +12,19 @@ gulp.task('eslint', () => {
     .pipe(eslint.failAfterError());
 });
 
-gulp.task('mocha', () => {
-  gulp.src(testFiles)
-    .pipe(mocha());
-});
+gulp.task('mocha', () =>
+    gulp.src(testFiles)
+        .pipe(mocha())
+        .once('error', () => {
+          process.exit(1);
+        })
+        .once('end', () => {
+          process.exit();
+        })
+);
 
 gulp.task('nodemon', () => {
-  nodemon({ script: 'server.js'})
+  nodemon({ script: './server'})
     .on('restart', () => {
       console.log('restarted!');
     });
@@ -26,8 +32,4 @@ gulp.task('nodemon', () => {
 
 gulp.task('default', ['eslint', 'mocha'], () => {
   console.log('default for eslint and mocha');
-});
-
-gulp.task('watch', () => {
-  gulp.watch(testFiles, appFiles, ['eslint', 'mocha']);
 });
