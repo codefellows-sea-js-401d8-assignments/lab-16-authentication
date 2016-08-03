@@ -5,6 +5,8 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const request = chai.request;
 const expect = chai.expect;
+const BasicHTTP = require('../lib/basic_http');
+const
 process.env.APP_SECRET = 'This is the APP SECRET';
 
 const mongoose = require('mongoose');
@@ -39,7 +41,7 @@ describe('Test crud', () => {
   });
 
   it('should login the user', (done) => {
-    request('localhost:3000')
+    request('localhost:3000').auth('dylanjsa90', '1234')
       .get('/api/signin')
       .end((err, res) => {
         expect(err).to.eql(null);
@@ -48,4 +50,7 @@ describe('Test crud', () => {
       });
   });
 
+  it('bad request', (done) => {
+    done()
+  });
 });
