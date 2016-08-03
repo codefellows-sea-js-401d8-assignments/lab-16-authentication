@@ -6,8 +6,6 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const httpError = require('http-errors');
 
-const APP_SECRET = process.env.APP_SECRET || 'test secret';
-
 const userSchema = Schema({
   username: { type: String },
   basic: {
@@ -59,7 +57,8 @@ userSchema.methods.generateToken = function() {
   return new Promise((resolve, reject) => {
     this.generateFindHash()
       .then((findHash) => {
-        resolve({ token: jwt.sign({token: findHash}, APP_SECRET) });
+        console.log(process.env.APP_SECRET);
+        resolve({ token: jwt.sign({ idd: findHash }, process.env.APP_SECRET) });
       })
       .catch((err) => {
         reject(err);

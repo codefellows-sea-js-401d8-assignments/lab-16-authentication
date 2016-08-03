@@ -25,6 +25,8 @@ let signup = function(req) {
       return reject(httpError(400, 'required fields not satisfied'));
     }
     let newUser = new User();
+    if (req.body.role)
+      newUser.role = req.body.role;
     newUser.username = req.body.username;
     newUser.basic.email = req.body.email;
     newUser.generateHash(req.body.password)

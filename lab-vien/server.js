@@ -7,6 +7,7 @@ const httpError = require('http-errors');
 const errorHandler = require('./lib/error_handler');
 
 const authRouter = require('./route/auth_router');
+const shanesgroupieRouter = require('./route/shanesgroupie_router');
 
 process.env.APP_SECRET = 'dev secret';
 
@@ -20,6 +21,7 @@ mongoose.connect(MONGO_URI);
 server.use(morgan('dev'));
 
 server.use('/api', authRouter);
+server.use('/api/shanesgroupie', shanesgroupieRouter);
 
 server.all('*', (req, res, next) => {
   next(httpError(404, 'route not registered'));

@@ -1,7 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const User = require('../model/User');
 const httpError = require('http-errors');
 
 module.exports = function(req, res, next) {
@@ -14,14 +14,16 @@ module.exports = function(req, res, next) {
       return reject(httpError(401, 'no auth bearer token'));
 
     let decoded = jwt.verify(authHeader[1], process.env.APP_SECRET);
+
     if (!decoded)
       return reject(httpError(401, 'auth token invalid'));
 
-    User.findOne({'basic.findHash': decoded.idd})
+    User.findOne({ 'basic.findHash': decoded.idd })
     .then((user) => {
       if (!user)
         return reject(httpError(404, 'user not found'));
       req.user = user;
+      console.log(user);
       resolve(user);
       next();
     })
