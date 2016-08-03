@@ -12,7 +12,7 @@ const port = 5000;
 const TEST_DB_SERVER = 'mongodb://localhost/test_db';
 process.env.DB_SERVER = TEST_DB_SERVER;
 
-describe('Authentication tests', () => {
+describe('User sign-up/sign-in tests', () => {
   before((done) => {
     server = app.listen(port, () => {
       done();
