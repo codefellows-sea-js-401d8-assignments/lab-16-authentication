@@ -14,6 +14,7 @@ if (!process.env.APP_SECRET) throw new Error('Set env APP_SECRET');
 mongoose.connect(MONGO_URI);
 
 app.use(morgan('dev'));
+
 app.use('/api', authRouter);
 
 app.use((err, req, res, next) => {

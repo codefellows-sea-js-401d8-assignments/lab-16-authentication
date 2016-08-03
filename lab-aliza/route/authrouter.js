@@ -18,9 +18,7 @@ authRouter.post('/signup', jsonParser, (req, res, next) => {
     .then((token) => {
       newUser.save((err, user) => {
         if (err) next(err400);
-        if (user) {
-          res.json(token);
-        }
+        if (user) return res.json(token);
       });
     }, err400);
 });
