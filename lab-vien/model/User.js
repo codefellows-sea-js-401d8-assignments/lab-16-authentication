@@ -13,8 +13,9 @@ const userSchema = Schema({
   basic: {
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    randomHash: { type: String, unique: true }
-  }
+    findHash: { type: String, unique: true }
+  },
+  role: { type: String, default: 'basic', required: true }
 });
 
 userSchema.methods.generateHash = function(password) {
@@ -40,12 +41,13 @@ userSchema.methods.comparePassword = function(password) {
   });
 };
 
-userSchema.methods.generateRandomHash = function() {
+// todo: handle duplicate hashes somehow
+userSchema.methods.generateFindHash = function() {
   return new Promise((resolve, reject) => {
-    this.basic.randomHash = crypto.randomBytes(32).toString('hex');
+    this.basic.findHash = crypto.randomBytes(32).toString('hex');
     this.save()
       .then(() => {
-        resolve(this.basic.randomHash);
+        resolve(this.basic.findHash);
       })
       .catch((err) => {
         reject(err);
@@ -55,9 +57,9 @@ userSchema.methods.generateRandomHash = function() {
 
 userSchema.methods.generateToken = function() {
   return new Promise((resolve, reject) => {
-    this.generateRandomHash()
-      .then((randomHash) => {
-        resolve({token: jwt.sign({token: randomHash}, APP_SECRET)});
+    this.generateFindHash()
+      .then((findHash) => {
+        resolve({ token: jwt.sign({token: findHash}, APP_SECRET) });
       })
       .catch((err) => {
         reject(err);

@@ -8,6 +8,8 @@ const errorHandler = require('./lib/error_handler');
 
 const authRouter = require('./route/auth_router');
 
+process.env.APP_SECRET = 'dev secret';
+
 const PORT = process.env.PORT || process.argv[2] || 3000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/auth_dev';
 

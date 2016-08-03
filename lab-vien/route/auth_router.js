@@ -3,7 +3,7 @@
 const Router = require('express').Router;
 const User = require('../model/User');
 const jsonParser = require('body-parser').json();
-const authParser = require('../lib/auth_parser');
+const authBasicParser = require('../lib/auth_basic_parser');
 const httpError = require('http-errors');
 const authRouter = module.exports = Router();
 
@@ -13,7 +13,7 @@ authRouter.post('/signup', jsonParser, (req, res, next) => {
   .catch(next);
 });
 
-authRouter.get('/signin', authParser, (req, res, next) => {
+authRouter.get('/signin', authBasicParser, (req, res, next) => {
   signin(req)
   .then(token => res.json(token))
   .catch(next);
