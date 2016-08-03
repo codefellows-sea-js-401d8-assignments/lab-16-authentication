@@ -7,6 +7,7 @@ const BasicHTTP = require('../lib/basichttp');
 const HTTPError = require('http-errors');
 const err400 = HTTPError(400, 'bad request');
 const err401 = HTTPError(401, 'unauthorized');
+
 let authRouter = Router();
 
 authRouter.post('/signup', jsonParser, (req, res, next) => {

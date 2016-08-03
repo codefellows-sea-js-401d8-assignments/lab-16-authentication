@@ -12,7 +12,7 @@ module.exports = exports = function(req, res, next) {
     next();
   } catch(error) {
     error.statusCode = 400;
-    error.message = 'Invalid BasicHTTP Authentication';
+    error.message = 'Invalid Basic HTTP Authentication';
     next(error);
   }
 };
