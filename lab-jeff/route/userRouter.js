@@ -12,8 +12,8 @@ userRouter.post('/signup', jsonParser, (req, res, next) => {
   let newUser = new User();
   newUser.basic.username = req.body.username;
   newUser.generateHash(req.body.password)
-  .then(() => {
-    newUser.save().then(res.json.bind(res));
+  .then((tokenData) => {
+    newUser.save().then(res.json.bind(tokenData));
   })
   .catch((err) => {
     err = handleError(400, 'Server Error');
@@ -32,6 +32,10 @@ userRouter.get('/signin', basicHttp, (req, res, next) => {
           return next(err);
         });
     }, authError);
+});
+
+userRouter.get('/', (req, res, next) => {
+  User.find().then(res.json.bind(res), next(handleError(500, 'Server error.')));
 });
 
 userRouter.get('*', (req, res, next) => {

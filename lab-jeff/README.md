@@ -24,6 +24,12 @@ Signup: `http POST :3000/api/user/signup "username=test" "password=password"`
 
 Signin: `http -a test:password :3000/api/user/signin`
 
+Once you have signed in, it will return a token, save this token.
+
+Add bank account: `http POST :3000/api/account Authorization:"Bearer yourTokenGoesHere" "accountType=savings" "accountNumber=12345"`
+
+Get all bank accounts: `http :3000/api/account`
+
 
 
 ###Test###
