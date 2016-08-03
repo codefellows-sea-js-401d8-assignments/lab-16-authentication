@@ -44,7 +44,6 @@ describe('Authentication tests', () => {
       .end((err, res) => {
         expect(res.body).to.eql('bad request');
         expect(res).to.have.status(400);
-
         done();
       });
   });
