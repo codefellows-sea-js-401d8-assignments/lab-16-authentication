@@ -31,6 +31,8 @@ describe('Authentication tests', () => {
       .send({email:'aliza@aliza.com', password:'password12345'})
       .end((err, res) => {
         expect(err).to.eql(null);
+        expect(res.body).to.have.property('token');
+        expect(res.body.token.length).to.not.eql(0);
         expect(res).to.have.status(200);
         done();
       });
@@ -40,7 +42,9 @@ describe('Authentication tests', () => {
       .post('/api/signup')
       .send({blah:'blah'})
       .end((err, res) => {
+        expect(res.body).to.eql('bad request');
         expect(res).to.have.status(400);
+
         done();
       });
   });
@@ -53,6 +57,7 @@ describe('Authentication tests', () => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('token');
+        expect(res.body.token.length).to.not.eql(0);
         done();
       });
   });
@@ -61,6 +66,7 @@ describe('Authentication tests', () => {
       .get('/api/signin')
       .auth('wrongemail', 'wrongpassword')
       .end((err, res) => {
+        expect(res.body).to.eql('unauthorized');
         expect(res).to.have.status(401);
         done();
       });
