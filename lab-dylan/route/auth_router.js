@@ -27,7 +27,7 @@ authRouter.get('/signin', BasicHTTP, (req, res, next) => {
   }, authError);
 });
 
-authRouter.put('/addrole/:userid', jsonParser, jwt_auth, authorization(), (req, res, next) => {
+authRouter.put('/addrole/:userid', jsonParser, jwt_auth, authorization(['trainer']), (req, res, next) => {
   User.update({_id: req.params.userid}, {$set: {role:req.body.role}})
     .then(res.json.bind(res), HandleError(500, next, 'Server Error'));
 });

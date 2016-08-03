@@ -51,7 +51,7 @@ describe('Test authenication', function() {
     it('should authenicate the user with a token', function(done) {
       request(baseUrl)
       .get('/jwt_auth')
-      .set('Authorization', 'Bearer' + this.tokenData)
+      .set('Authorization', 'Bearer' + this.tokenData.token)
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res.body.msg).to.eql('success');
