@@ -3,10 +3,10 @@ const eslint = require('gulp-eslint');
 const mocha = require('gulp-mocha');
 const nodemon = require('gulp-nodemon');
 
-var testFiles = ['test/test.js'];
-var appFiles = ['**/*.js'];
+var testFiles = ['./test/authenticationTest.js'];
+var appFiles = ['./**/*.js'];
 
-gulp.task('default', ['lint:app', 'lint:test', 'mocha:test', 'watch' ], () => {
+gulp.task('default', ['lint:app', 'lint:test', 'mocha:test', 'watch'], () => {
   console.log('Watch is running');
 });
 
@@ -18,12 +18,12 @@ gulp.task('nodemon', () => {
 });
 
 gulp.task('mocha:test', () => {
-  return gulp.src(testFiles, {read: false})
+  return gulp.src(testFiles, {read: true})
   .pipe(mocha({reporter: 'nyan'}));
 });
 
 gulp.task('lint:app', () => {
-  gulp.src(appFiles)
+  return gulp.src(appFiles)
     .pipe(eslint({
       rules : {
         'indent' : [2,2]
@@ -38,7 +38,7 @@ gulp.task('lint:app', () => {
 });
 
 gulp.task('lint:test', () => {
-  gulp.src(testFiles)
+  return gulp.src(testFiles)
     .pipe(eslint({
       rules : {
         'indent' : [2,2]
@@ -48,7 +48,8 @@ gulp.task('lint:test', () => {
         'es6',
         'mocha'
       ]
-    }));
+    }))
+    .pipe(eslint.format());
 });
 
 gulp.task('watch', () => {
