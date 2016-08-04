@@ -1,4 +1,5 @@
 process.env.APP_SECRET = 'test';
+
 require('./testServer');
 require('./authenticationTest');
 

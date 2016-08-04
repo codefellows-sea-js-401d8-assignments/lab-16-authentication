@@ -5,8 +5,10 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
 const expect = chai.expect;
-const baseUrl = 'mongodb://localhost:5000/api';
+const baseUrl = 'localhost:5000/api';
 const User = require('../model/users');
+
+process.env.SECRET = 'secret';
 
 describe('PLEASE AUTHENTICATE', function(){
   it('should create a new user', function(done){
@@ -29,8 +31,8 @@ describe('PLEASE AUTHENTICATE', function(){
         user.save().then((userData) => {
           this.user = userData;
           done();
-        }, (err) => {throw err});
-      }, (err) => {throw err});
+        }, (err) => {throw err;});
+      }, (err) => {throw err;});
     });
 
     it('should authenticate with an existing user', function(done) {
