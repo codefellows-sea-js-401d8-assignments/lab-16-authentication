@@ -1,9 +1,11 @@
 'use strict';
 
-if(!process.env.APP_SECRET) throw new Error('Please set the env APP_SECRET');
+// if(!process.env.APP_SECRET) throw new Error('Please set the env APP_SECRET');
+
 const mongoose = require('mongoose');
 mongoose.Promise = Promise;
 mongoose.connect('mongod://localhost/auth-dev');
+
 let app = require('express')();
 let authRouter= require('./routes/auth_router.js');
 let serverError = require('debug')('cfdeme:error');

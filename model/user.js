@@ -8,10 +8,11 @@ let userSchema = mongoose.Schema({
   basic: {
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true}
-  }
+  },
+  role: {type: String, default: 'basic', required: true}
 });
 
-userSchema.methods.createHash = function(password) {
+userSchema.methods.generateHash = function(password) {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, 8, (err, data) => {
       if (err) return reject(err);
