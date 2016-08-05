@@ -32,8 +32,41 @@ describe('Authenication Testing', ()=>{
       .post('/api/signup')
       .send({email:'e@email.com', password:'words'})
       .end((err, res)=>{
-        
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('token');
         done();
       });
   });
+
+  it('POST should return a 401', (done) =>{
+    request('localhost:4000')
+      .post('/api/signup')
+      .end((err, res)=>{
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
+
+  it('GET should return a 200', (done) =>{
+    request('localhost:4000')
+      .get('/api/signin')
+      .auth('e@email.com', 'words')
+      .end((err, res)=>{
+        expect(res).to.have.status(200);
+        expect(res.body.token.length).to.not.eql(0);
+        expect(res.body).to.have.property('token');
+        done();
+      });
+  });
+
+  // it('GET should return a 401', (done)=>{
+  //   request('localhost:4000')
+  //     .get('/api/signin')
+  //     .auth('e@email.com', 'nope')
+  //     .end((err, res)=>{
+  //       expect(res).to.have.status(401);
+  //       expect(res.body).to.have.string('Could Not Authorize');
+  //       done();
+  //     });
+  // });
 });
