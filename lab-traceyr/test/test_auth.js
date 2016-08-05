@@ -59,14 +59,14 @@ describe('Authenication Testing', ()=>{
       });
   });
 
-  // it('GET should return a 401', (done)=>{
-  //   request('localhost:4000')
-  //     .get('/api/signin')
-  //     .auth('e@email.com', 'nope')
-  //     .end((err, res)=>{
-  //       expect(res).to.have.status(401);
-  //       expect(res.body).to.have.string('Could Not Authorize');
-  //       done();
-  //     });
-  // });
+  it('GET should return a 401', (done)=>{
+    request('localhost:4000')
+      .get('/api/signin')
+      .auth('e@email.com', 'nope')
+      .end((err, res)=>{
+        expect(res).to.have.status(401);
+        expect(res.body).to.have.string('No matching password');
+        done();
+      });
+  });
 });

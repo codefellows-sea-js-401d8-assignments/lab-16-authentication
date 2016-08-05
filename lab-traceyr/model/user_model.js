@@ -23,7 +23,7 @@ userSchema.methods.createHash = function(password){
 
 userSchema.methods.comparePass = function(password){
   return new Promise((resolve, reject) =>{
-    bcrypt.hash(password, this.basic.password, (err, data) =>{
+    bcrypt.compare(password, this.basic.password, (err, data) =>{
       if (err) return reject(err);
       if (data === false) return reject(new Error('No matching password'));
       resolve({token: jwt.sign({idd: this.basic.email}, process.env.APP_SECRET)});
