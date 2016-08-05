@@ -1,4 +1,4 @@
-# Lab 11 single resource express api ![idle](./assets/siegward.gif)
+# Lab 17 authorization ![idle](./assets/siegward.gif)
 
 ## To run server
 Clone down then run in terminal:
@@ -7,35 +7,49 @@ npm i
 ```
 To start mongodb in terminal:
 ```
-mongod --dbpath exampleDB
+mongod --dbpath db
 ```
 To start server in terminal:
 ```
 node server.js
 ```
-To run tests and lint files, make sure mongodb is running, then in terminal type:
+To lint files, in terminal type:
 ```
 gulp
 ```
 
+To run tests, make sure mongodb is running, then in terminal:
+```
+mocha
+```
+
+
 ## Using httpie to interact with server on the command line
-To POST a new hit to the server:
+### Make sure mongodb is running
+To SIGNUP for a basic token (save this token as environment variable BASICTOKEN for further testing):
 ```
-http POST localhost:3000/api/hit "name=example hit name" "time=december" "location=seattle" "price=5 dollars"
+http localhost:3000/api/signup "username=example username" "email=example email" "password=example password"
 ```
-To GET a hit from the server:
+To SIGNUP for an admin token (save this token as environment variable ADMINTOKEN for further testing):
 ```
-http GET localhost:3000/api/hit/exampleid
+http localhost:3000/api/signup "username=example username" "email=example email" "password=example password" "role=admin"
 ```
-To GET all hits from the server:
+To SIGNIN:
 ```
-http GET localhost:3000/api/hit/all
+http localhost:3000/api/signin "username=example username" "password=example password"
 ```
-To DELETE a hit from the server:
+To POST to the simple resource database (admin credentials required):
 ```
-http DELETE localhost:3000/api/hit/exampleid
+http POST localhost:3000/api/shanesgroupie "Authorization:Bearer $ADMINTOKEN" "name=example name" age=99 "location=example location"
 ```
-To PUT new hit properties to existing hit on the server:
+To GET a list of simple resources (basic or admin credentials required):
 ```
-http PUT localhost:3000/api/hit/exampleid "name=example hit name" "time=december" "location=seattle" "price=new price"
+http GET localhost:3000/api/shanesgroupie "Authorization:Bearer $BASICTOKEN"
+```
+To PUT a the simple resource in database (admin credentials required):
+```
+http PUT localhost:3000/api/shanesgroupie/exampleid "Authorization:Bearer $ADMINTOKEN" "name=example name" age=99 "location=example location"
+To DELETE a simple resource (admin credentials required):
+```
+http DELETE localhost:3000/api/shanesgroupie/exampleid "Authorization:Bearer $ADMINTOKEN"
 ```

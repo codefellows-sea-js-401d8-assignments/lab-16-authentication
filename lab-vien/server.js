@@ -1,33 +1,33 @@
 'use strict';
-
 const express = require('express');
 const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-const debug = require('debug')('movie:server');
+mongoose.Promise = Promise;
 const morgan = require('morgan');
-const errorResponse = require('./lib/error-response');
-const hitRouter = require('./route/hit-route');
-const hitlistRouter = require('./route/hitlist-route');
-const AppError = require('./lib/AppError');
+const httpError = require('http-errors');
+const errorHandler = require('./lib/error_handler');
 
-const PORT = process.argv[2] || process.env.PORT || 3000;
-const LOCAL_DB_SERVER = 'mongodb://localhost/hitlist_db';
-const DB_SERVER = process.env.DB_SERVER || LOCAL_DB_SERVER;
+const authRouter = require('./route/auth_router');
+const shanesgroupieRouter = require('./route/shanesgroupie_router');
+
+process.env.APP_SECRET = 'dev secret';
+
+const PORT = process.env.PORT || process.argv[2] || 3000;
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/auth_dev';
 
 const server = express();
 
-mongoose.connect(DB_SERVER);
+mongoose.connect(MONGO_URI);
 
 server.use(morgan('dev'));
-server.use(errorResponse());
-server.use('/api/hit', hitRouter);
-server.use('/api/hitlist', hitlistRouter);
 
+server.use('/api', authRouter);
+server.use('/api/shanesgroupie', shanesgroupieRouter);
 
-server.all('*', (req, res) => {
-  debug('*:404');
-  return res.sendError(AppError.error404('path not supported'));
+server.all('*', (req, res, next) => {
+  next(httpError(404, 'route not registered'));
 });
+
+server.use(errorHandler);
 
 module.exports = server.listen(PORT, () => {
   console.log(`server up on port ${PORT}`);
