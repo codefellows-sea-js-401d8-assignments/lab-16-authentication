@@ -49,6 +49,7 @@ http GET localhost:3000/api/shanesgroupie "Authorization:Bearer $BASICTOKEN"
 To PUT a the simple resource in database (admin credentials required):
 ```
 http PUT localhost:3000/api/shanesgroupie/exampleid "Authorization:Bearer $ADMINTOKEN" "name=example name" age=99 "location=example location"
+```
 To DELETE a simple resource (admin credentials required):
 ```
 http DELETE localhost:3000/api/shanesgroupie/exampleid "Authorization:Bearer $ADMINTOKEN"
