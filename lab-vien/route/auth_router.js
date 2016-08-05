@@ -39,7 +39,7 @@ let signup = function(req) {
 
 let signin = function(req) {
   return new Promise((resolve, reject) => {
-    User.findOne({username: req.auth.username})
+    User.findOne({ username: req.auth.username })
     .then((user) => {
       if (!user)
         return reject(httpError(401, 'no such user'));

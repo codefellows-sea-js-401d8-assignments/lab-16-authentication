@@ -23,7 +23,6 @@ module.exports = function(req, res, next) {
       if (!user)
         return reject(httpError(404, 'user not found'));
       req.user = user;
-      console.log(user);
       resolve(user);
       next();
     })

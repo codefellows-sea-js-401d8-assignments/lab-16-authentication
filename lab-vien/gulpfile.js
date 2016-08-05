@@ -22,7 +22,7 @@ gulp.task('nodemon', function () {
 
 gulp.task('test', () => {
   return gulp.src(testFiles)
-  .pipe(mocha({reporter: 'nyan'}));
+  .pipe(mocha({ reporter: 'nyan' }));
 });
 
-gulp.task('default', ['lint', 'test']);
+gulp.task('default', ['lint']);

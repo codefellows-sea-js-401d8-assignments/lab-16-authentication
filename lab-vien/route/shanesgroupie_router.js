@@ -5,7 +5,6 @@ const BASIC = 'basic';
 
 const Shanesgroupie = require('../model/Shanesgroupie');
 const jsonParser = require('body-parser').json();
-const errorHandler = require('../lib/error_handler');
 const Router = require('express').Router;
 const httpError = require('http-errors');
 const authBearerParser = require('../lib/auth_bearer_parser');
@@ -13,7 +12,7 @@ const authorization = require('../lib/authorization');
 
 const shanesgroupieRouter = module.exports = Router();
 
-// rules: only shane can post/put/delete, tokened users can get, untokened cannot do anything
+// rules: only admin can post/put/delete, basic token users can get, untokened cannot do anything
 
 shanesgroupieRouter.get('/', authBearerParser, authorization([BASIC]), (req, res, next) => {
   Shanesgroupie.find()
@@ -22,6 +21,12 @@ shanesgroupieRouter.get('/', authBearerParser, authorization([BASIC]), (req, res
 });
 
 shanesgroupieRouter.post('/', authBearerParser, authorization([ADMIN]), jsonParser, (req, res, next) => {
+  if(!req.body)
+    return next(httpError(400, 'post requested with no body'));
+
+  if(!req.body.name && !req.body.location && !req.body.age)
+    return next(httpError(404, 'post requested with invalid body'));
+
   req.body.userId = req.user._id;
   new Shanesgroupie(req.body).save()
   .then(res.json.bind(res))
@@ -40,15 +45,23 @@ shanesgroupieRouter.put('/:id', authBearerParser, authorization([ADMIN]), jsonPa
     return next(httpError(404, 'put requested with invalid body'));
 
   Shanesgroupie.findByIdAndUpdate(_id, req.body)
-  .then((hitlist) => {
-    if (!hitlist)
+  .then((groupie) => {
+    if (!groupie)
       return next(httpError(404, 'put requested with invalid ID'));
     return res.send('successfully updated');
   })
   .catch(err => next(err));
 });
 
-// bearRouter.post('/', jsonParser, jwt_auth, authzn(['wrangler']), (req, res, next) => {
-//   req.body.wranglerId = req.user._id;
-//   new Bear(req.body).save().then(res.json.bind(res), ErrorHandler(400, next));
-// });
+shanesgroupieRouter.delete('/:id', authBearerParser, authorization([ADMIN]), (req, res, next) => {
+  let _id = req.params.id;
+  if(!_id)
+    return next(httpError(404, 'put requested with no ID'));
+  Shanesgroupie.findByIdAndRemove(req.params.id)
+  .then((groupie) => {
+    if (!groupie)
+      return next(httpError(404, 'delete requested with invalid ID'));
+    res.json(groupie);
+  })
+  .catch(next);
+});

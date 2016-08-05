@@ -1,7 +1,6 @@
 'use strict';
 
 module.exports = function(err, req, res, next) {
-  console.log('ERROR');
   console.error(err.message);
   if (err.status) { // if it has a status it's an instance of http-errors
     res.status(err.status).send(err.name);
