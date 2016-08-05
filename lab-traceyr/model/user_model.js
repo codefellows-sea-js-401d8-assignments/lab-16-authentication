@@ -14,6 +14,7 @@ let userSchema = mongoose.Schema({
 userSchema.methods.createHash = function(password){
   return new Promise((resolve, reject) =>{
     bcrypt.hash(password, 8, (err, data) =>{
+      debugger;
       if(err) return reject(err);
       this.basic.password = data;
       resolve({token: jwt.sign({idd: this.basic.email}, process.env.APP_SECRET)});
