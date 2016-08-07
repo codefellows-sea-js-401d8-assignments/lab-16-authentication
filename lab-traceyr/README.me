@@ -1,0 +1,14 @@
+#Instructions
+
+-Clone the file onto your local machine from github
+-Run in the terminal: npm install
+-To run tests and lint files in the terminal: gulp
+-To start the server from the terminal run: node server.js
+
+
+-In one terminal in your root directory type: node server
+-In a second terminal in your root directory type: mongod --dbpath ./db
+-To sign up:
+--In a third terminal type: echo '{"email":"email12345@email.com", "password": "password"}' | http :3000/api/signup
+-To sign in:
+--In a third terminal type: http -a email12345@email.com:password :3000/api/signin
