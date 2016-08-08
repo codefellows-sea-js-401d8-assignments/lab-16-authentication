@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "assert": "^1.4.1",
     "chai": "^3.5.0",
     "chai-gulp-helpers": "0.0.3",
     "chai-http": "^3.0.0",
