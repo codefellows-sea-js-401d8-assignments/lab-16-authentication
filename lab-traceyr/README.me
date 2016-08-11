@@ -1,0 +1,18 @@
+#Instructions
+
+-Clone the file onto your local machine from github
+-Run in the terminal: npm install
+-To run tests and lint files in the terminal: gulp
+-To start the server from the terminal run: node server.js
+
+
+-In one terminal in your root directory type: node server
+-In a second terminal in your root directory type: mongod --dbpath ./db
+-To sign up:
+--In a third terminal type: echo '{"email":"email12345@email.com", "password": "password"}' | http :3000/api/signup
+-To sign in:
+--In a third terminal type: http -a email12345@email.com:password :3000/api/signin
+-To save your token:
+--When you sign up, a token shows up in the screen. Copy and paste that token, including quotes, but not the word token. In your command line type: export TOKEN='your token here'
+-To POST a new Drink
+--In a third terminal type: cat test/test_drink.js | http :3000/api/drink authorization:"Bearer $TOKEN"
