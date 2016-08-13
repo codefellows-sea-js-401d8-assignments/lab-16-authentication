@@ -21,15 +21,13 @@ userRouter.post('/signup', jsonParser, (req, res, next) => {
 });
 
 userRouter.get('/signin', BasicHTTP, function(req, res, next) {
-  let DBError = HTTPError(400, next, 'invalid id');
-  let Err404 = HTTPError(404, next, 'could not authorize');
-  if(!req.auth.username || !req.auth.password) return Err404();
+  if(!req.auth.username || !req.auth.password) return HTTPError(404, next, 'could not authorize');
   UserSchema.findOne({'basic.username': req.auth.username})
     .then((user) => {
-      if (!user) return Err404();
+      if (!user) return HTTPError(404, next, 'could not authorize');
       user.comparePass(req.auth.password)
-        .then(res.json.bind(res), Err404);
-    }, DBError);
+        .then(res.json.bind(res), HTTPError(404, next, 'could not authorize'));
+    }, HTTPError(400, next, 'invalid id'));
 });
 
 module.exports = exports = userRouter;

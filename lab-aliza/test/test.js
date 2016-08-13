@@ -33,12 +33,13 @@ describe('testing different routes for our server ', () => {
       });
   });
   after((done) =>{
-    mongoose.connection.db.dropDatabase(()=>{
+    mongoose.connection.db.dropDatabase((done)=>{
       mongoose.disconnect(() => {
         server.close();
         done();
       });
     });
+    done();
   });
   it('should POST a new user', (done) => {
     request('localhost:5000')
@@ -75,7 +76,7 @@ describe('testing different routes for our server ', () => {
       });
   });
 
-  it('should NOT GET a new user - bad auth', (done) => {
+  it('should NOT login a new user because of bad auth', (done) => {
     request('localhost:5000')
       .get('/api/signin')
       .auth('bad', 'auth')
