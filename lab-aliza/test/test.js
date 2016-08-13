@@ -76,16 +76,6 @@ describe('testing different routes for our server ', () => {
       });
   });
 
-  it('should NOT login a new user because of bad auth', (done) => {
-    request('localhost:5000')
-      .get('/api/signin')
-      .auth('bad', 'auth')
-      .end((err, res)=>{
-        expect(res).to.have.status(404);
-        done();
-      });
-  });
-
   it('should POST a new panda', (done) =>{
     request('localhost:5000')
       .post('/api/panda')
@@ -106,26 +96,6 @@ describe('testing different routes for our server ', () => {
       .end((err, res)=>{
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
-        done();
-      });
-  });
-
-  it('should NOT POST a new panda', (done) =>{
-    request('localhost:5000')
-      .post('/api/panda')
-      .set('Authorization', 'Bearer ' + userToken)
-      .end((err, res)=>{
-        expect(res).to.have.status(400);
-        done();
-      });
-  });
-
-  it('should NOT POST a new panda - bad auth', (done) =>{
-    request('localhost:5000')
-      .post('/api/panda')
-      .set('Authorization', 'Bearer ')
-      .end((err, res)=>{
-        expect(res).to.have.status(401);
         done();
       });
   });
