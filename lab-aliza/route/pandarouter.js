@@ -1,59 +1,47 @@
 'use strict';
 
 const Router = require('express').Router;
-const debug = require('debug');
-const serverlog = debug('serverlog');
-const Panda = require('../model/pandamodel');
-const authorization = require('../lib/authorization');
+const PandaSchema = require('../model/pandamodel');
 const HTTPError = require('http-errors');
-const err400 = HTTPError(400, 'bad request');
-const err404= HTTPError(404, 'not valid');
-const jwtAuth = require('../lib/jwtauth');
+const jwt_auth = require('../lib/auth_bearer');
 let pandaRouter = Router();
-var bodyParser = require('body-parser');
-let jsonParser = bodyParser.json();
-let urlParser = bodyParser.urlencoded({
-  extended: true
-});
+var jsonParser = require('body-parser').json();
+
 pandaRouter.use(jsonParser);
-pandaRouter.use(urlParser);
 
 pandaRouter.get('/', (req, res) => {
   res.send('Panda DB. Enter /api/panda/<id> or /api/all');
 });
 
 pandaRouter.get('/all', (req, res) => {
-  Panda.find({})
+  PandaSchema.find({})
   .exec((err, pandas) => {
-    if (err) return err404;
+    if (err) return HTTPError(404, 'not found');
     res.status(200).json(pandas);
-    serverlog('pandas: ', pandas);
   });
 });
 
 pandaRouter.get('/panda/:id', (req, res) => {
-  Panda.findOne({
+  PandaSchema.findOne({
     _id: req.params.id
   })
   .exec((err, pandas) => {
-    if (err) return err404;
-    serverlog('pandas: ', pandas);
+    if (err) return HTTPError(404, 'not found');
     res.status(200).json(pandas);
   });
 });
 
-pandaRouter.post('/panda', jsonParser, jwtAuth, authorization(['zookeeperId']), (req, res) => {
-  req.body.zookeeperId = req.user._id;
-  new Panda(req.body).save((err, panda) => {
-    if(!req.body.name || !req.body.happy || !req.body.age) return err400;
-    serverlog('panda: ', panda);
+pandaRouter.post('/panda', jsonParser, jwt_auth, (req, res) => {
+  req.body.userId = req.user._id;
+  new PandaSchema(req.body).save((err, panda) => {
+    if(!req.body.name) return HTTPError(400, 'bad request');
     return res.status(200).send(panda);
   });
 });
 
-pandaRouter.put('/panda/:id', jsonParser, jwtAuth, authorization(['zookeeperId']), (req, res) => {
-  req.body.zookeeperId = req.user._id;
-  Panda.findOneAndUpdate({
+pandaRouter.put('/panda/:id', jsonParser, jwt_auth, (req, res) => {
+  req.body.userId = req.user._id;
+  PandaSchema.findOneAndUpdate({
     _id: req.params.id
   },
     { $set: {
@@ -62,19 +50,18 @@ pandaRouter.put('/panda/:id', jsonParser, jwtAuth, authorization(['zookeeperId']
       happy: req.body.happy
     }
   }, {upsert: true}, (err, newPanda) => {
-    if (err) return err400;
-    if (!req.params.id) return err404;
+    if (err) return HTTPError(400, 'bad request');
+    if (!req.params.id) return HTTPError(404, 'not found');
     res.status(200).send(newPanda);
-    serverlog('updated panda: ', newPanda);
   });
 });
 
-pandaRouter.delete('/panda/:id', jsonParser, jwtAuth, authorization(['zookeeperId']), (req, res) => {
-  req.body.zookeeperId = req.user._id;
-  Panda.findOneAndRemove({
+pandaRouter.delete('/panda/:id', jsonParser, jwt_auth, (req, res) => {
+  req.body.userId = req.user._id;
+  PandaSchema.findOneAndRemove({
     _id: req.params.id
   }, (err, panda) => {
-    if(err) return err404;
+    if(err) return HTTPError(404, 'not found');
     return res.status(204).json(panda);
   });
 });
