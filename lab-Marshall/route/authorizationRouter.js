@@ -30,10 +30,11 @@ authorizationRouter.get('/signin', BasicHTTP, (req, res, next) => {
     }, authError);
 });
 
-authorizationRouter.put('/addrole/:userid', jsonParser, jwtAuth, Auth(), (req, res, next) => {
-  User.update({_id: req.params.userid}, {$set: {role: req.body.role}}).then(res.json.bind(res), handleError(400, next, '400: bad request'));
-});
-
-authorizationRouter.get('/users', jsonParser, jwtAuth, Auth(), (req, res, next) => {
-  User.find().then(res.json.bind(res), handleError(500, next, '500: Server Error!'));
+authorizationRouter.get('/:id', (req, res, next) => {
+  let handleDbError = handleError(400, next, '400: bad request');
+  let fourOhFour = handleError(404, next);
+  User.findOne({'_id': req.params.id}).then((data) => {
+    if (!data) return next(fourOhFour(new Error('404: No user found!!!')));
+    res.json(data);
+  }, handleDbError);
 });

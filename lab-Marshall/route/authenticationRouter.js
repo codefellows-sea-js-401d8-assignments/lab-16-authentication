@@ -13,8 +13,8 @@ authRouter.post('/signup', jsonParser, (req, res, next) => {
   newUser.basic.email = req.body.email;
   newUser.username = req.body.username || req.body.email;
   newUser.generateHash(req.body.password)
-    .then(() => {
-      newUser.save().then(res.json.bind(res), handleError(400, next, 'bad request'));
+    .then((token) => {
+      newUser.save().then(res.json(token));
     }, handleError(500, next, '500: server error!'));
 });
 
