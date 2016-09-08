@@ -23,5 +23,5 @@ authRouter.get('/signin', BasicHTTP, (req, res, next) => {
     .then((user) => {
       if (!user) return authError;
       user.comparePassword(req.auth.password).then(res.json.bind(res), authError);
-    });
+    }, authError);
 });
