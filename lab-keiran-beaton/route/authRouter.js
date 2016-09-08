@@ -14,7 +14,7 @@ authRouter.post('/signup', jsonParser, (req, res, next) => {
   newUser.generateHash(req.body.password)
     .then(() => {
       newUser.save().then(res.json.bind(res), ErrorHandler(400, next));
-    }, ErrorHandler(500, next, 'Server Error'));
+    }, ErrorHandler(400, next, 'Server Error'));
 });
 
 authRouter.get('/signin', BasicHTTP, (req, res, next) => {
