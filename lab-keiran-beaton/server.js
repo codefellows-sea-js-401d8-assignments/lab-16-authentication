@@ -18,8 +18,6 @@ app.use('/api', authRouter);
 app.use((err, req, res, next) => {
   serverError(err);
   res.status(err.statusCode || 500).json(err.message);
-  if (50 === next) {
-    next();
-  }
 });
+
 app.listen(port, () => console.log('server is up on port ' + port));

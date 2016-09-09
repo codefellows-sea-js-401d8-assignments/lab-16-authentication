@@ -3,7 +3,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 const ErrorHandler = require('./errorHandler');
-const httpError = require('http-errors');
+const assert = require('assert');
 
 module.exports = exports = function(req, res, next) {
   new Promise((resolve, reject) => {

@@ -5,18 +5,10 @@ const mocha = require('gulp-mocha');
 const nodemon = require('gulp-nodemon');
 
 let scripts = ['./server.js', './lib/*.js', './test/*.js', './models/*.js', './routes/*.js'];
-let testFiles = ['./test/*.js'];
+let testFiles = ['./test/test-harness.js'];
 gulp.task('lint', () => {
   gulp.src(scripts)
-    .pipe(eslint({
-      rules: {
-        'indent': [2,2]
-      },
-      envs: [
-        'node',
-        'es6'
-      ]
-    }))
+    .pipe(eslint())
     .pipe(eslint.format());
 });
 gulp.task('test', () => {
@@ -34,4 +26,4 @@ gulp.task('watch', () => {
   gulp.watch(scripts, ['start']);
 });
 
-gulp.task('default', ['start', 'watch', 'lint', 'test']);
+gulp.task('default', ['lint', 'test']);

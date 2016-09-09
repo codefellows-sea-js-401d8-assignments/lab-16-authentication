@@ -26,7 +26,6 @@ userSchema.methods.comparePassword = function(password) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, this.basic.password, (err, data) => {
       if (err) {
-        console.log('error in comparePassword', err);
         return reject(err);
       }
       if (!data) return reject(httpError(401, 'Password did not match'));
