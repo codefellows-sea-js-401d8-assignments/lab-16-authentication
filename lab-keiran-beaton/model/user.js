@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const httpError = require('http-errors');
 
 let userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
@@ -24,8 +25,11 @@ userSchema.methods.generateHash = function(password) {
 userSchema.methods.comparePassword = function(password) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, this.basic.password, (err, data) => {
-      if (err) return reject(err);
-      if (data === false) return reject(new Error('Password did not match'));
+      if (err) {
+        console.log('error in comparePassword', err);
+        return reject(err);
+      }
+      if (!data) return reject(httpError(401, 'Password did not match'));
       resolve({token: jwt.sign({idd: this.basic.email}, process.env.APP_SECRET)});
     });
   });

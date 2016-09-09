@@ -4,14 +4,13 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const expect = chai.expect;
-const request = chai.request;
 let baseUrl = 'localhost:5000/api';
 const User = require('../model/user');
 
 
 describe('testing authentication', function() {
   it('should get a 404', (done) => {
-    request(baseUrl)
+    chai.request(baseUrl)
     .get('/notaroute')
     .end((err, res) => {
       expect(err).to.have.status(404);
@@ -21,7 +20,7 @@ describe('testing authentication', function() {
   });
 
   it('api/signup should get a 200 status', (done) => {
-    request(baseUrl)
+    chai.request(baseUrl)
     .post('/signup')
     .send({username: 'keiran', email: 'keiranbeaton@gmail.com', password: '123'})
     .end((err, res) => {
@@ -33,7 +32,7 @@ describe('testing authentication', function() {
   });
 
   it('api/signup should get a 400 status', (done) => {
-    request(baseUrl)
+    chai.request(baseUrl)
     .post('/signup')
     .end((err, res) => {
       expect(err).to.have.status(400);
@@ -55,9 +54,9 @@ describe('testing authentication', function() {
     });
 
     it('api/signin should get a 200 status', function(done) {
-      request(baseUrl)
+      chai.request(baseUrl)
         .get('/signin')
-        
+        .auth('test@test.com', '123')
         .end((err, res) => {
           expect(err).to.eql(null);
           expect(res.body).to.have.property('token');
@@ -66,9 +65,10 @@ describe('testing authentication', function() {
         });
     });
 
-    it('api/signin should get a 400 status', function(done) {
-      request(baseUrl)
+    it('api/signin should get a 401 status', function(done) {
+      chai.request(baseUrl)
       .get('/signin')
+      .auth('test@test.com', 'credentials')
       .end((err, res) => {
         expect(err.message).to.eql('Unauthorized');
         expect(res).to.not.have.status(200);

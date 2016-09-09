@@ -1,9 +1,9 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const assert = require('assert');
 const User = require('../model/user');
 const ErrorHandler = require('./errorHandler');
+const httpError = require('http-errors');
 
 module.exports = exports = function(req, res, next) {
   new Promise((resolve, reject) => {
