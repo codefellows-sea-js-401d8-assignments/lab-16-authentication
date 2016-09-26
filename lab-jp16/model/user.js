@@ -1,15 +1,15 @@
 'use strict';
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtonen');
+const jwt = require('jsonwebtoken');
 
 let userSchema = mongoose.Schema({
   username: String,
   basic: {
-    email: {type: String, required: true, unique: true},
-    password: {type: String, required: true}
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
   },
-  role: {type: String, default: 'basic', required: true}
+  role: { type: String, default: 'basic', required: true }
 });
 
 userSchema.methods.generateHash = function(password) {
@@ -17,7 +17,7 @@ userSchema.methods.generateHash = function(password) {
     bcrypt.hash(password, 8, (err, data) => {
       if (err) return reject(err);
       this.basic.password = data;
-      resolve({token: jwt.sign({idd: this.basic.email}, process.env.APP_SECRET)});
+      resolve({ token: jwt.sign({ idd: this.basic.email }, process.env.APP_SECRET) });
     });
   });
 };
@@ -26,7 +26,7 @@ userSchema.methods.comparePassword = function(password) {
     bcrypt.compare(password, this.basic.password, (err, data) => {
       if (err) return reject(err);
       if (data === false) return reject(new Error('Password did not match record'));
-      resolve({token: jwt.sign({idd: this.basic.email}, process.env.APP_SECRET)});
+      resolve({ token: jwt.sign({ idd: this.basic.email }, process.env.APP_SECRET) });
     });
   });
 };

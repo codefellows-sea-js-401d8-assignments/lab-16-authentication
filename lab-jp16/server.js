@@ -1,13 +1,27 @@
 'use strict';
 
-// if(!process.env.APP_SECRET) throw new Error('Please set the env APP_SECRET');
-
+// npm modules
+const express = require('express');
+const morgan = require('morgan');
 const mongoose = require('mongoose');
-mongoose.Promise = Promise;
-mongoose.connect('mongod://localhost/auth-dev');
 
-let app = require('express')();
-let authRouter= require('./routes/auth_router.js');
+// app modules
+
+
+// constant variables
+const port = process.env.PORT || 3000;
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost/authdev';
+let app = express();
+
+//setup mongo
+mongoose.connect(mongoURI);
+mongoose.Promise = Promise;
+
+//setup middleware
+app.use(morgan('dev'));
+
+// setup routes
+let authRouter = require('./routes/auth_router.js');
 let serverError = require('debug')('cfdeme:error');
 
 app.use('/api', authRouter);
