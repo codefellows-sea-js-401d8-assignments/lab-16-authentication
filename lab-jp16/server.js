@@ -30,4 +30,5 @@ app.use((err, req, res, next) => {
   serverError(err);
   res.status(err.statusCode || 500).json(err.error.message);
 });
-app.listen(3000, () => console.log('Server up'));
+app.listen(port, () => console.log('Server up', port));
+module.exports = ('server');
