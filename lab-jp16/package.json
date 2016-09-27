@@ -1,31 +1,19 @@
 {
-  "name": "lab-16-authentication",
+  "name": "lab-jp16",
   "version": "1.0.0",
   "description": "![cf](https://i.imgur.com/7v5ASc8.png) lab 16 express authorization ======",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Firefly4266/lab-16-authentication.git"
-  },
-  "keywords": [],
-  "author": "Jp Gaines",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Firefly4266/lab-16-authentication/issues"
-  },
-  "homepage": "https://github.com/Firefly4266/lab-16-authentication#readme",
   "dependencies": {
-    "bcrypt": "latest",
+    "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "http-errors": "^1.5.0",
     "jsonwebtoken": "^7.1.9",
     "mongodb": "^2.2.10",
-    "mongoose": "^4.5.8",
+    "mongoose": "^4.6.1",
     "morgan": "^1.7.0",
     "node-uuid": "^1.4.7"
   },
@@ -36,10 +24,15 @@
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
     "gulp-mocha": "^3.0.1",
+    "gulp-nodemon": "^2.2.0",
     "mocha": "^3.0.2",
     "nodemon": "^1.10.2"
   },
-  "directories": {
-    "test": "test"
-  }
+  "scripts": {
+    "test": "mocha",
+    "start": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

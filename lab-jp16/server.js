@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 
 // constant variables
 const port = process.env.PORT || 3000;
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost/authdev';
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost/auth_dev';
 let app = express();
 
 //setup mongo
