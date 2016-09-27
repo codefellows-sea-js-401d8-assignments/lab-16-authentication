@@ -11,7 +11,7 @@ let blogRouter = module.exports = exports = express.Router();
 
 blogRouter.get('/', (req, res, next) => {
   let handleDbError = HandleError(400, next, 'invalid id');
-  Blog.find({'_id': req.params.id}).then(res.json.bind(res), handleDbError);
+  Blog.find({ '_id': req.params.id }).then(res.json.bind(res), handleDbError);
 });
 
 blogRouter.post('/', jsonParser, (req, res, next) => {
@@ -19,11 +19,11 @@ blogRouter.post('/', jsonParser, (req, res, next) => {
 });
 
 blogRouter.put('/:id', jsonParser, (res, req, next) => {
-  (Blog.findAndUpdate({'_id': req.params.id}, req.body).then(res.json.bind(res), HandleError(400, next)));
+  (Blog.findAndUpdate({ '_id': req.params.id }, req.body).then(res.json.bind(res), HandleError(400, next)));
 });
 
 blogRouter.delete('/:id', (req, res, next) => {
-  (Blog.remove({'_id': req.params.id}).then(res.json).bind(res), HandleError(400, next, 'invalid_id'));
+  (Blog.remove({ '_id': req.params.id }).then(res.json).bind(res), HandleError(400, next, 'invalid_id'));
 });
 
 blogRouter.use('/:blogId/peer', blogPeerRouter);

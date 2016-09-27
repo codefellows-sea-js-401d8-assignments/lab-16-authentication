@@ -7,11 +7,11 @@ const jsonParser = require('body-parser').json();
 
 let blogPeerRouter = module.exports = exports = express.Router();
 let findBlog = function(req, res, next) {
-  Blog.findOne({'_id': req.params.blogId})
-  .then((blog) => {
-    req.blog = blog;
-    next();
-  }, HandleError(404, next, 'invalid_blog Id'));
+  Blog.findOne({ '_id': req.params.blogId })
+    .then((blog) => {
+      req.blog = blog;
+      next();
+    }, HandleError(404, next, 'invalid_blog Id'));
 };
 
 blogPeerRouter.get('/', findBlog, (res, req, next) => {

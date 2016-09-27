@@ -2,7 +2,7 @@
   "name": "lab-jp16",
   "version": "1.0.0",
   "description": "![cf](https://i.imgur.com/7v5ASc8.png) lab 16 express authorization ======",
-  "main": "gulpfile.js",
+  "main": "server.js",
   "directories": {
     "test": "test"
   },
