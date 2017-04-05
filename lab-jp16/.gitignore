@@ -51,6 +51,13 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
+# db
+ db
+ "db
+ "./db"
+ db/
+ #db/
+
 ### Vim ###
 # swap
 [._]*.s[a-w][a-z]
@@ -63,3 +70,9 @@ Session.vim
 
 # auto-generated tag files
 tags
+
+# vscode
+vscode
+.vscode
+./.vscode
+../.vscode
